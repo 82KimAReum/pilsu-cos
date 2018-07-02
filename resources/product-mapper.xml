@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Product">
+	
+	<resultMap type="productVO" id="selectMap">
+		<result property="cartNo" column="cartNo"/>
+		<result property="productCode" column="productCode"/>
+		<result property="productName" column="productName"/>
+		<result property="productDesc" column="productDesc"/>
+		<result property="price" column="price"/>
+		<result property="capacity" column="capacity"/>
+		<result property="image" column="image"/>
+		<result property="categoryCode" column="categoryCode"/>
+		<result property="brandCode" column="brandCode"/>
+	</resultMap>
+	
+	<select id="select" resultMap="selectMap">
+	<![CDATA[ 
+		select * FROM Product
+		where rownum <= 140
+	]]>
+	</select>
+   
+   <!-- <select id="selectOne" parameterType="String" resultMap="selectMap">
+      SELECT b.brandName, p.productName, a.avgGrade, p.capacity, p.price, p.image
+      FROM Product p, AvgGrade a, Brand b
+      WHERE p.productCode = a.productCode
+          AND p.brandCode = b.brandCode    
+          AND p.productCode = #{productCode}
+   </select> -->
+   
+   <parameterMap type="hashMap" id="selectOneMap">
+      <parameter property="productCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectOne" statementType="CALLABLE" parameterMap="selectOneMap">
+      { call sp_product_select_bycode(?, ?) }
+   </select>
+   
+   
+   <parameterMap type="hashMap" id="SelectCategoryMap">
+      <parameter property="categoryCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectCategory1" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_category1(?, ?) }
+   </select>
+   <select id="selectCategory2" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_category2(?, ?) }
+   </select>
+   <select id="selectCategory3" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_category3(?, ?) }
+   </select>
+   <select id="selectCategory4" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_category4(?, ?) }
+   </select>
+   
+   <select id="selectMCategory1" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_mcategory1(?, ?) }
+   </select>
+   <select id="selectMCategory2" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_mcategory2(?, ?) }
+   </select>
+   <select id="selectMCategory3" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_mcategory3(?, ?) }
+   </select>
+   <select id="selectMCategory4" statementType="CALLABLE" parameterMap="SelectCategoryMap">
+      { call sp_product_select_mcategory4(?, ?) }
+   </select>
+   
+   <parameterMap type="hashMap" id="SelectBrandMap">
+    	<parameter property="brandCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+   		<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectBrand0" statementType="CALLABLE" parameterMap="SelectBrandMap">
+      { call sp_product_select_brand0(?, ?) }
+   </select>
+   <select id="selectBrand1" statementType="CALLABLE" parameterMap="SelectBrandMap">
+      { call sp_product_select_brand1(?, ?) }
+   </select>
+   <select id="selectBrand2" statementType="CALLABLE" parameterMap="SelectBrandMap">
+      { call sp_product_select_brand2(?, ?) }
+   </select>
+   <select id="selectBrand3" statementType="CALLABLE" parameterMap="SelectBrandMap">
+      { call sp_product_select_brand3(?, ?) }
+   </select>
+   <select id="selectBrand4" statementType="CALLABLE" parameterMap="SelectBrandMap">
+      { call sp_product_select_brand4(?, ?) }
+   </select>
+   
+   <parameterMap type="hashMap" id="SelectBrandCategoryMap">
+    	<parameter property="brandCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+    	<parameter property="categoryCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+   		<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectBrandCategory0" statementType="CALLABLE" parameterMap="SelectBrandCategoryMap">
+      { call sp_product_select_brandcategory0(?, ?, ?) }
+   </select>
+   <select id="selectBrandCategory1" statementType="CALLABLE" parameterMap="SelectBrandCategoryMap">
+      { call sp_product_select_brandcategory1(?, ?, ?) }
+   </select>
+   <select id="selectBrandCategory2" statementType="CALLABLE" parameterMap="SelectBrandCategoryMap">
+      { call sp_product_select_brandcategory2(?, ?, ?) }
+   </select>
+   <select id="selectBrandCategory3" statementType="CALLABLE" parameterMap="SelectBrandCategoryMap">
+      { call sp_product_select_brandcategory3(?, ?, ?) }
+   </select>
+   <select id="selectBrandCategory4" statementType="CALLABLE" parameterMap="SelectBrandCategoryMap">
+      { call sp_product_select_brandcategory4(?, ?, ?) }
+   </select>
+   
+   <parameterMap type="hashMap" id="SelectTypeMap">
+   		<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectType1" statementType="CALLABLE" parameterMap="SelectTypeMap">
+      { call sp_product_select_type1(?) }
+   </select>
+   <select id="selectType2" statementType="CALLABLE" parameterMap="SelectTypeMap">
+      { call sp_product_select_type2(?) }
+   </select>
+   <select id="selectType3" statementType="CALLABLE" parameterMap="SelectTypeMap">
+      { call sp_product_select_type3(?) }
+   </select>
+   
+   <parameterMap type="hashMap" id="SelectTypeCategoryMap">
+    	<parameter property="categoryCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+   		<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectTypeCategory1" statementType="CALLABLE" parameterMap="SelectTypeCategoryMap">
+      { call sp_product_select_typecategory1(?,?) }
+   </select>
+   <select id="selectTypeCategory2" statementType="CALLABLE" parameterMap="SelectTypeCategoryMap">
+      { call sp_product_select_typecategory2(?,?) }
+   </select>
+   <select id="selectTypeCategory3" statementType="CALLABLE" parameterMap="SelectTypeCategoryMap">
+      { call sp_product_select_typecategory3(?,?) }
+   </select>
+   
+   <parameterMap type="hashMap" id="SelectSearchMap">
+    	<parameter property="search" mode="IN" javaType="String" jdbcType="CHAR"/>
+   		<parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectSearch" statementType="CALLABLE" parameterMap="SelectSearchMap">
+   	  { call sp_product_select_search(?,?) }
+   </select>
+	
+</mapper>

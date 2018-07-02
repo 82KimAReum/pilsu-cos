@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Qna">
+	
+	<resultMap type="qnaVO" id="selectMap">
+		<result property="qnano" column="qnano"/>
+		<result property="title" column="title"/>
+		<result property="contents" column="contents"/>
+		<result property="recontents" column="recontents"/>
+		<result property="email" column="email"/>
+		<result property="replstat" column="replstat"/>
+		<result property="regdate" column="regdate"/>
+	</resultMap>
+	
+	
+	<parameterMap type="hashMap" id="SelectMap">
+      <parameter property="email" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+	<select id="select" statementType="CALLABLE" parameterMap="SelectMap">
+		{ call sp_qna_select(?,?) }
+	</select>
+	<select id="select3" statementType="CALLABLE" parameterMap="SelectMap">
+		{ call sp_qna_select3(?,?) }
+	</select>
+	
+	<parameterMap type="hashMap" id="SelectOneMap">
+      <parameter property="qnano" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+	<select id="selectOne" statementType="CALLABLE" parameterMap="SelectOneMap">
+		{ call sp_qna_selectOne(?,?) }
+	</select>
+   
+   
+   <resultMap type="qnaVO" id="selectQnanoMap">
+   		<result property="qnano" column="qnano"/>
+   </resultMap>
+   <parameterMap type="hashMap" id="SelectQnanoMap">
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectQnanoMap"/>
+   </parameterMap>
+   <select id="selectQnano" statementType="CALLABLE" parameterMap="SelectQnanoMap">
+      { call sp_qna_select_qnano(?) }
+   </select>
+   
+   <parameterMap type="qnaVO" id="insertMap">
+		<parameter property="qnano" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="title" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="contents" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+	</parameterMap>
+   <insert id="insert" statementType="CALLABLE"  parameterMap="insertMap">
+   	{ call sp_qna_insert(?,?,?,?) }
+   </insert>
+   	
+</mapper>

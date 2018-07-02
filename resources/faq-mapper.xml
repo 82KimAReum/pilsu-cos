@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Faq">
+	<!-- email, name, age, gender, skintype, phone, zipcode, address1, address2, regstat -->
+	
+	<resultMap type="faqVO" id="selectMap">
+		<result property="faqno" column="faqno"/>
+		<result property="title" column="title"/>
+		<result property="contents" column="contents"/>
+	</resultMap>
+	
+	<select id="select" resultMap="selectMap">
+		SELECT * FROM FAQ ORDER BY faqno 
+	</select>
+	
+	<parameterMap type="hashMap" id="SelectOneMap">
+      <parameter property="faqno" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+	<select id="selectOne" statementType="CALLABLE" parameterMap="SelectOneMap">
+		{ call sp_faq_selectOne(?,?) }
+	</select>
+	
+</mapper>

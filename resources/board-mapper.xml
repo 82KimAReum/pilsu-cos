@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Board">
+	
+	<resultMap type="boardVO" id="selectMap">
+		<result property="boardNo" column="boardNo"/>
+		<result property="title" column="title"/>
+		<result property="contents" column="contents"/>
+		<result property="regDate" column="regDate"/>
+		<result property="readCount" column="readCount"/>
+		<result property="likeCount" column="likeCount"/>
+		<result property="dislikeCount" column="dislikeCount"/>
+		<result property="email" column="email"/>
+	</resultMap>
+   
+   	<parameterMap type="hashMap" id="SelectMap">
+      <parameter property="email" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+	<select id="select" statementType="CALLABLE" parameterMap="SelectMap">
+		{ call sp_board_select(?,?) }
+	</select>
+	<select id="select3" statementType="CALLABLE" parameterMap="SelectMap">
+		{ call sp_board_select3(?,?) }
+	</select>
+	
+	<parameterMap type="hashMap" id="SelectAllMap">
+		<parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+	</parameterMap>
+	<select id="selectAll1" statementType="CALLABLE" parameterMap="SelectAllMap">
+		{ call sp_board_selectall1(?) }
+	</select>
+	<select id="selectAll2" statementType="CALLABLE" parameterMap="SelectAllMap">
+		{ call sp_board_selectall2(?) }
+	</select>
+	<select id="selectAll3" statementType="CALLABLE" parameterMap="SelectAllMap">
+		{ call sp_board_selectall3(?) }
+	</select>
+	<select id="selectAll4" statementType="CALLABLE" parameterMap="SelectAllMap">
+		{ call sp_board_selectall4(?) }
+	</select>
+	
+		<parameterMap type="hashMap" id="SelectOneMap">
+      <parameter property="boardNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+	<select id="selectOne" statementType="CALLABLE" parameterMap="SelectOneMap">
+		{ call sp_board_selectOne(?,?) }
+	</select>
+	
+	<update id="updateOne0" parameterType="boardVO">
+		{ call sp_board_updateOne(#{boardNo}) }
+	</update>
+	<update id="updateOne1" parameterType="boardVO">
+		{ call sp_board_updateonelike(#{boardNo},#{email}) }
+	</update>
+	<update id="updateOne2" parameterType="boardVO">
+		{ call sp_board_updateonedis(#{boardNo},#{email}) }
+	</update>
+	
+	<parameterMap type="boardVO" id="UpdateMap">
+      <parameter property="boardNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="title" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+      <parameter property="contents" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+   </parameterMap>
+	<update id="updateContents" parameterMap="UpdateMap" statementType="CALLABLE">
+		{ call sp_board_updatecontents(?,?,?) }
+	</update>
+	
+	   
+   <resultMap type="boardVO" id="selectBoardnoMap">
+   		<result property="boardNo" column="boardNo"/>
+   </resultMap>
+   <parameterMap type="hashMap" id="SelectBoardnoMap">
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectBoardnoMap"/>
+   </parameterMap>
+   <select id="selectBoardno" statementType="CALLABLE" parameterMap="SelectBoardnoMap">
+      { call sp_board_select_boardno(?) }
+   </select>
+   
+   <parameterMap type="boardVO" id="insertMap">
+		<parameter property="boardNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="title" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="contents" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+	</parameterMap>
+   <insert id="insert" statementType="CALLABLE"  parameterMap="insertMap">
+   	{ call sp_board_insert(?,?,?,?) }
+   </insert>
+   
+   <delete id="delete" parameterType="String">
+   	{ call sp_board_delete(#{boardno}) }
+   </delete>
+   
+   </mapper>

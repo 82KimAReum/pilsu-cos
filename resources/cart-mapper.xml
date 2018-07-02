@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Cart">
+	
+	<resultMap type="cartVO" id="selectMap">
+		<result property="cartNo" column="cartNo"/>
+		<result property="amount" column="amount"/>
+		<result property="email" column="email"/>
+		<result property="productCode" column="productCode"/>
+		<result property="productName" column="productName"/>
+		<result property="price" column="price"/>
+		<result property="image" column="image"/>
+	</resultMap>
+
+	<parameterMap type="hashMap" id="selectCartList">
+		<parameter property="email" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+	</parameterMap>
+	<select id="select" statementType="CALLABLE" parameterMap="selectCartList">
+		{ call sp_cart_select_All(?, ?) }
+	</select>
+
+	<parameterMap type="hashMap" id="SelectCartnoMap">
+    	<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+	</parameterMap>
+	<select id="selectCartno" statementType="CALLABLE" parameterMap="SelectCartnoMap">
+		{ call sp_cart_select_cartno(?) }
+	</select>
+	
+	<parameterMap type="hashMap" id="selectByEmailMap">
+		<parameter property="email" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+	</parameterMap>
+	<select id="selectCartByEmail" statementType="CALLABLE" parameterMap="selectByEmailMap">
+		{ call sp_cart_select_byemail(?,?) }
+	</select>
+	
+	<!-- 이메일별 카트 사이즈 -->
+	<parameterMap type="String" id="cartSizeMap">
+		<parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+	</parameterMap>
+	<select id="cartSizeByEmail" statementType="CALLABLE" parameterMap="cartSizeMap" resultType="int">
+		SELECT COUNT(email)
+	    FROM Cart
+	    WHERE email = #{email}
+	</select>
+
+	<parameterMap type="cartVO" id="insertCartMap">
+		<parameter property="cartNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="amount" mode="IN" javaType="int" jdbcType="INTEGER"/>
+		<parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="productCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+	</parameterMap>
+	<insert id="insertCart" parameterMap="insertCartMap">
+		{ call sp_cart_insert(?,?,?,?) }
+	</insert>
+
+	<!-- 주문 완료 후 카트 테이블에서 삭제 -->
+	<parameterMap type="cartVO" id="deleteCartMap">
+		<parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="cartNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+	</parameterMap>
+	<delete id="delete" parameterMap="deleteCartMap">
+		{ call sp_cart_delete_bycartno(?, ?) }
+	</delete>
+</mapper>

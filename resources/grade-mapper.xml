@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Grade">
+	
+   <parameterMap type="gradeVO" id="insertMap">
+      <parameter property="gradeno" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+      <parameter property="grade" mode="IN" javaType="Double" jdbcType="DOUBLE"/>
+      <parameter property="comments" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+      <parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+      <parameter property="productCode" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+   </parameterMap>
+   <insert id="insert" parameterMap="insertMap">
+      { call sp_grade_insert(?,?,?,?,?) }
+   </insert>
+   
+   <resultMap type="gradeVO" id="selectGradenoMap">
+   		<result property="gradeno" column="gradeno"/>
+   </resultMap>
+   <parameterMap type="hashMap" id="SelectGradenoMap">
+      <parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectGradenoMap"/>
+   </parameterMap>
+   <select id="selectGradeno" statementType="CALLABLE" parameterMap="SelectGradenoMap">
+      { call sp_grade_select_gradeno(?) }
+   </select>
+   
+   <resultMap type="gradeVO" id="selectMap">
+      <result property="gradeno" column="gradeno"/>
+      <result property="comments" column="comments"/>
+      <result property="grade" column="grade"/>
+      <result property="regDate" column="regDate"/>
+      <result property="email" column="email"/>
+      <result property="productCode" column="productCode"/>
+      <result property="gender" column="gender"/>
+      <result property="skintype" column="skintype"/>
+      <result property="age" column="age"/>
+   </resultMap>
+   
+   <resultMap type="gradeVO" id="selectListMap">
+      <result property="gradeno" column="gradeno"/>
+      <result property="regDate" column="regDate"/>
+      <result property="comments" column="comments"/>
+      <result property="grade" column="grade"/>
+      <result property="productName" column="productName"/>
+   </resultMap>
+   
+   <parameterMap type="hashMap" id="selectGradesMap">
+   	<parameter property="productCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+   	<parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="selectGrades" statementType="CALLABLE" parameterMap="selectGradesMap">
+   	{ call sp_grade_select_grades(?,?) }
+   </select>
+   
+   	<parameterMap type="hashMap" id="SelectMap">
+      <parameter property="email" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectListMap"/>
+   </parameterMap>
+	<select id="select" statementType="CALLABLE" parameterMap="SelectMap">
+		{ call sp_grade_select(?,?) }
+	</select>
+	<select id="select3" statementType="CALLABLE" parameterMap="SelectMap">
+		{ call sp_grade_select3(?,?) }
+	</select>
+   
+   <insert id="insert1" parameterMap="insertMap">
+      { call sp_grade_insert1(?,?,?,?,?) }
+   </insert>
+   <insert id="insert2" parameterMap="insertMap">
+      { call sp_grade_insert2(?,?,?,?,?) }
+   </insert>
+   <insert id="insert3" parameterMap="insertMap">
+      { call sp_grade_insert3(?,?,?,?,?) }
+   </insert>
+   
+</mapper>

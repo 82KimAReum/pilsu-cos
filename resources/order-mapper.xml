@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Order">
+	
+	<resultMap type="orderVO" id="insertMap">
+		<result property="orderNo" column="orderNo"/>
+		<result property="name" column="name"/>
+		<result property="zipcode" column="zipcode"/>
+		<result property="address1" column="address1"/>
+		<result property="address2" column="address2"/>
+		<result property="phone" column="phone"/>
+		<result property="comments" column="comments"/>
+		<result property="email" column="email"/>
+		<result property="productCode" column="productCode"/>
+		<result property="amount" column="amount"/>
+		<result property="price" column="price"/>
+	</resultMap>
+
+	<parameterMap type="orderVO" id="insertOrderMap">
+		<parameter property="orderNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="name" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="zipcode" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="address1" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="address2" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="phone" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="comments" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+		<parameter property="email" mode="IN" javaType="String" jdbcType="VARCHAR"/>
+	</parameterMap>
+	<insert id="insertOrder" parameterMap="insertOrderMap">
+		{ call sp_product_order(?,?,?,?,?,?,?,?) }
+	</insert>
+	
+	<parameterMap type="orderVO" id="insertOrderDetailMap">
+		<parameter property="orderNo" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="productCode" mode="IN" javaType="String" jdbcType="CHAR"/>
+		<parameter property="amount" mode="IN" javaType="int" jdbcType="INTEGER"/>
+		<parameter property="price" mode="IN" javaType="int" jdbcType="INTEGER"/>
+	</parameterMap>
+	<insert id="insertOrderDetail" parameterMap="insertOrderDetailMap">
+		{ call sp_product_order_detail(?,?,?,?) }
+	</insert>
+	
+	<parameterMap type="hashMap" id="SelectOrdernoMap">
+    	<parameter property="result" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="insertMap"/>
+	</parameterMap>
+	<select id="selectOrderno" statementType="CALLABLE" parameterMap="SelectOrdernoMap">
+		{ call sp_order_select_orderno(?) }
+	</select>
+
+   <resultMap type="orderVO" id="selectMap">
+      <result property="orderNo" column="orderNo"/>
+      <result property="name" column="name"/>
+      <result property="zipcode" column="zipcode"/>
+      <result property="address1" column="address1"/>
+      <result property="address2" column="address2"/>
+      <result property="phone" column="phone"/>
+      <result property="payment" column="payment"/>
+      <result property="comments" column="comments"/>
+      <result property="email" column="email"/>
+      <result property="productCode" column="productCode"/>
+      <result property="amount" column="amount"/>
+      <result property="price" column="price"/>
+      <result property="orderDate" column="orderDate"/>
+      <result property="orderStat" column="orderStat"/>
+      <result property="productName" column="productName"/>
+   </resultMap>
+   
+   <parameterMap type="hashMap" id="SelectMap">
+      <parameter property="email" mode="IN" javaType="String" jdbcType="CHAR"/>
+      <parameter property="results" mode="OUT" javaType="ResultSet" jdbcType="CURSOR" resultMap="selectMap"/>
+   </parameterMap>
+   <select id="select" statementType="CALLABLE" parameterMap="SelectMap">
+      { call sp_p_order_select(?,?) }
+   </select>
+   <select id="select3" statementType="CALLABLE" parameterMap="SelectMap">
+      { call sp_p_order_select3(?,?) }
+   </select>
+   
+
+</mapper>

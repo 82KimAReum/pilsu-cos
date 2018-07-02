@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="Man">
+	
+	<resultMap type="productVO" id="selectMap">
+		<result property="cartNo" column="cartNo"/>
+		<result property="productCode" column="productCode"/>
+		<result property="productName" column="productName"/>
+		<result property="productDesc" column="productDesc"/>
+		<result property="price" column="price"/>
+		<result property="capacity" column="capacity"/>
+		<result property="image" column="image"/>
+		<result property="categoryCode" column="categoryCode" javaType="String" jdbcType="CHAR"/>
+		<result property="brandCode" column="brandCode"/>
+	</resultMap>
+	
+	<select id="selectAll"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+	</select>
+	
+	<select id="selectCount" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+	</select>
+	
+	<select id="selectSkin"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='1'
+	</select>
+	
+	<select id="selectCountSkin" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='1'
+	</select>
+	<!--  -->
+	<select id="selectLotion"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='2'
+	</select>
+	
+	<select id="selectCountLotion" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='2'
+	</select>
+	<!--  -->
+	<select id="selectEssence"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='3'
+	</select>
+	
+	<select id="selectCountEssence" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='3'
+	</select>
+	<!--  -->
+	<select id="selectCream"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='4'
+	</select>
+	
+	<select id="selectCountCream" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='4'
+	</select>
+	<!--  -->
+	<select id="selectOil"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='5'
+	</select>
+	
+	<select id="selectCountOil" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='5'
+	</select>
+	<!--  -->
+	<select id="selectShaving"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='6'
+	</select>
+	
+	<select id="selectCountShaving" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='6'
+	</select>
+	<!--  -->
+	
+	<select id="selectCleansing"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='7'
+	</select>
+	
+	<select id="selectCountCleansing" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='7'
+	</select>
+	
+	<select id="selectMask"  resultMap="selectMap">
+		select * FROM Product where productcode like 'M%'
+		and categorycode='8'
+	</select>
+	
+	<select id="selectCountMask" resultType="int">
+		select count(*) from product where productcode like 'M%' 
+		and categorycode='8'
+	</select>
+	
+	
+	
+</mapper>
